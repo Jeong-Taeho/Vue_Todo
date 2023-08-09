@@ -1,0 +1,11 @@
+{
+  "extends": [
+    "eslint:recommend",
+    "plugin:@typescript-eslint/recommend",
+    "plugin:vue/vue3-recommend",
+    "plugin:prettier/recommend"
+  ],
+  "parserOptions": {
+    "parser": "@typescript-eslint/parser"
+  }
+}
