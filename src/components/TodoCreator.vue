@@ -40,6 +40,7 @@ async function createTodo(event: MouseEvent | KeyboardEvent) {
 
 <style scoped lang="scss">
 .todo-creator {
+  margin-bottom: 30px;
   height: var(--item-height);
   position: relative;
   :deep(.the-icon) {
