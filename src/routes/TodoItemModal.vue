@@ -11,7 +11,8 @@ const route = useRoute();
 const router = useRouter();
 
 const editorEl = ref<HTMLDivElement | null>(null);
-
+const updateLoading = ref(false);
+const deleteLoading = ref(false);
 const foundTodo = todosStore.todos.find((todo) => todo.id === route.params.id);
 foundTodo ? (todosStore.currentTodo = { ...foundTodo }) : router.push("/");
 
@@ -44,17 +45,34 @@ function offModal() {
 }
 
 async function deleteTodo() {
-  await todosStore.deleteTodo({
-    id: todosStore.currentTodo.id
-  });
-  offModal();
+  if (deleteLoading.value) return;
+  if (updateLoading.value) return;
+  deleteLoading.value = true;
+  try {
+    await todosStore.deleteTodo({
+      id: todosStore.currentTodo.id
+    });
+    offModal();
+  } catch (error) {
+    console.error("TodoItemModal/deleteTodo", error);
+  } finally {
+    deleteLoading.value = false;
+  }
 }
 
 async function updateTodo() {
-  await todosStore.updateTodo({
-    ...todosStore.currentTodo
-  });
-  offModal();
+  if (updateLoading.value) return;
+  updateLoading.value = true;
+  try {
+    await todosStore.updateTodo({
+      ...todosStore.currentTodo
+    });
+    offModal();
+  } catch (error) {
+    console.error("TodoItemModal/updateTodo", error);
+  } finally {
+    updateLoading.value = false;
+  }
 }
 
 function formatDate(date: string) {
@@ -78,11 +96,13 @@ function formatDate(date: string) {
           <TheBtn @click="offModal">취소</TheBtn>
           <TheBtn
             danger
+            :loading="deleteLoading"
             @click="deleteTodo">
             삭제
           </TheBtn>
           <TheBtn
             success
+            :loading="updateLoading"
             @click="updateTodo">
             저장
           </TheBtn>

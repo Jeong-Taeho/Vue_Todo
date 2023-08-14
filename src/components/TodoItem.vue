@@ -43,7 +43,9 @@ function onTodoModal() {
       @click="onTodoModal">
       {{ todo.title }}
     </div>
-    <div class="drag-handle">
+    <div
+      v-if="todosStore.filterStatus === 'all'"
+      class="drag-handle">
       <span class="material-symbols-outlined"> drag_indicator </span>
     </div>
   </div>
